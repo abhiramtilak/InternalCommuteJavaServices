@@ -11,7 +11,10 @@ import com.commute.db.model.Users;
 @Transactional
 public interface UsersRepository extends JpaRepository<Users, String>{
 
-	@Query(value="select * from users where email=?1 or mobile_number=?2", nativeQuery = true)
+	@Query(value="select * from users where email=?1 or mobile_number=?2 limit 1", nativeQuery = true)
 	Users findByemailormobileNumber(String email, String mobileNumber);
+
+	@Query(value="select * from users where email=?1 and password=?2 limit 1", nativeQuery = true)
+	Users findByEmailandPassword(String email, String password);
 
 }

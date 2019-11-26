@@ -36,19 +36,14 @@ public class RegistrationController {
 	
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
 	public ResponseEntity<String> registeruser( @RequestBody User user ) {
-		try {
 		Users dbUser = registerService.findUser(user);
 		if( dbUser != null && dbUser.getEmail() != null ) {
 			logger.info("User with details already exists!!");
-			return new ResponseEntity<String>("User already exists with email or mobile number!!", HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String>("User already exists with email or mobile number!!", HttpStatus.CONFLICT);
 		}
 		Users users = registerService.createUser(user);
 		logger.info("User created with userId:::"+users.getUserId());
 		return new ResponseEntity<String>(users.getUserId()+"", HttpStatus.OK);
-		}catch( Exception e ) {
-			return new ResponseEntity<String>("Some thing went wrong please try again!!", HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		
 	}
 
 }
