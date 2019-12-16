@@ -17,7 +17,6 @@ public class RegisterDAOImpl implements RegisterDAO{
 	UsersRepository usersRepository;
 
 	public Users createUser(Users user) {
-			
 		Users users = usersRepository.save(user);
 		
 		return users;

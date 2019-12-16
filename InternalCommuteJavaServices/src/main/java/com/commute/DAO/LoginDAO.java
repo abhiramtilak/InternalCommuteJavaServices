@@ -9,4 +9,10 @@ public interface LoginDAO {
 
 	public Users validateUser(Users users);
 
+	public Users updateProfile(Users users);
+
+	public Users validatePassword(String userId);
+
+	public void updatePassword(String userId, String newPassword);
+
 }

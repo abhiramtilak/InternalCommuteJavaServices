@@ -26,8 +26,10 @@ public class RegisterServiceImpl implements RegisterService{
 		users.setOfficeAddress(user.getOfficeAddress());
 		users.setHomeAddress(user.getHomeAddress());
 		users.setPassword(user.getPassword());
-		users.setVehicle(user.getVehicle());
-		users.setAvailableSeats(user.getAvailableSeats());
+		if( user.getRole().equalsIgnoreCase("Rider") ) {
+			users.setVehicle(user.getVehicle());
+			users.setAvailableSeats(user.getAvailableSeats());
+		}
 		Users users1 =registerDAO.createUser(users);
 		return users1;
 	}

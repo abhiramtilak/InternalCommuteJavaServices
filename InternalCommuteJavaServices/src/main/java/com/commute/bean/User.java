@@ -2,6 +2,7 @@ package com.commute.bean;
 
 public class User {
 	
+	private int userId;
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -14,6 +15,12 @@ public class User {
 	private String vehicle;
 	private String availableSeats;
 	
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 	public String getFirstName() {
 		return firstName;
 	}

@@ -2,6 +2,7 @@ package com.commute.service;
 
 import org.springframework.stereotype.Component;
 
+import com.commute.bean.PasswordUpdate;
 import com.commute.bean.User;
 import com.commute.db.model.Users;
 
@@ -9,4 +10,8 @@ import com.commute.db.model.Users;
 public interface LoginService {
 
 	public Users validateUser(User user);
+
+	public Users updateProfile(User user);
+
+	public String updatePassword(PasswordUpdate passwordUpdate);
 }

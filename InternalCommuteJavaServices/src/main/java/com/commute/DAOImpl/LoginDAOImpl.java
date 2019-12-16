@@ -20,4 +20,20 @@ public class LoginDAOImpl implements LoginDAO{
 		Users dbUser = usersRepository.findByEmailandPassword(users.getEmail(), users.getPassword());
 		return dbUser;
 	}
+
+	public Users updateProfile(Users users) {
+		Users user = usersRepository.saveById(users.getUserId(), users.getFirstName(), users.getLastName(), users.getEmail(), users.getMobileNumber(),
+				users.getRole(), users.getOfficeAddress(), users.getHomeAddress(), users.getAvailableSeats(), users.getVehicle());
+		return user;
+	}
+
+	public Users validatePassword(String userId) {
+		Users user = usersRepository.findByUserId(userId);
+		return user;
+	}
+
+	public void updatePassword(String userId, String newPassword) {
+		usersRepository.updatePasswordByUserId(userId, newPassword);
+		
+	}
 }
