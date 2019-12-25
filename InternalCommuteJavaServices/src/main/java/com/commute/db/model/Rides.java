@@ -35,6 +35,12 @@ public class Rides {
 	
 	@Column(name = "rideTime")
 	private String rideTime;
+	
+	@Column(name = "fromAddress")
+	private String fromAddress;
+	
+	@Column(name = "toAddress")
+	private String toAddress;
 
 	public int getRideId() {
 		return rideId;
@@ -91,4 +97,21 @@ public class Rides {
 	public void setRideTime(String rideTime) {
 		this.rideTime = rideTime;
 	}
+
+	public String getFromAddress() {
+		return fromAddress;
+	}
+
+	public void setFromAddress(String fromAddress) {
+		this.fromAddress = fromAddress;
+	}
+
+	public String getToAddress() {
+		return toAddress;
+	}
+
+	public void setToAddress(String toAddress) {
+		this.toAddress = toAddress;
+	}
+	
 }

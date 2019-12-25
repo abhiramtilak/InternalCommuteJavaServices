@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import com.commute.bean.User;
 import com.commute.db.model.Users;
@@ -30,7 +31,6 @@ public class RegistrationController {
 		User u = new User();
 		u.setEmail("testMail");
 		u.setFirstName("firstName");
-		
 		return new ResponseEntity<User>(u, HttpStatus.CREATED);
 	}
 	
