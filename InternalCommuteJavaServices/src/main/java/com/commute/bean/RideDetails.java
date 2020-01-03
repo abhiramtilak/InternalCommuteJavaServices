@@ -8,6 +8,8 @@ public class RideDetails {
 	
 	private String userId;
 	
+	private String rideTakerId;
+	
 	private String riderName;
 	
 	private String riderMobileNumber;
@@ -101,6 +103,14 @@ public class RideDetails {
 
 	public void setToAddress(String toAddress) {
 		this.toAddress = toAddress;
+	}
+
+	public String getRideTakerId() {
+		return rideTakerId;
+	}
+
+	public void setRideTakerId(String rideTakerId) {
+		this.rideTakerId = rideTakerId;
 	}
 	
 }

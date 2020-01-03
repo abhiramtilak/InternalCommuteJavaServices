@@ -41,6 +41,9 @@ public class Rides {
 	
 	@Column(name = "toAddress")
 	private String toAddress;
+	
+	@Column(name = "cancelled")
+	private Boolean cancelled;
 
 	public int getRideId() {
 		return rideId;
@@ -112,6 +115,14 @@ public class Rides {
 
 	public void setToAddress(String toAddress) {
 		this.toAddress = toAddress;
+	}
+
+	public Boolean getCancelled() {
+		return cancelled;
+	}
+
+	public void setCancelled(Boolean cancelled) {
+		this.cancelled = cancelled;
 	}
 	
 }
