@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.commute.bean.PasswordUpdate;
+import com.commute.bean.ResponseBody;
 import com.commute.bean.User;
 import com.commute.db.model.Users;
 import com.commute.service.LoginService;
@@ -28,7 +29,7 @@ public class LoginController {
 	
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
 	public ResponseEntity<Users> userDetails( @RequestBody User user ) {
-		logger.info("email is ::"+user.getEmail()+". Password is:::::"+user.getPassword());
+		logger.info("email is ::"+user.getEmail());
 		Users dbUser = loginService.validateUser(user);
 		if( dbUser != null && dbUser.getEmail() != null ) {
 			return new ResponseEntity<Users>(dbUser, HttpStatus.OK);
@@ -38,11 +39,19 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
-	public ResponseEntity<Users> updateProfile( @RequestBody User user ) {
+	public ResponseEntity<ResponseBody> updateProfile( @RequestBody User user ) {
 		
 		//update user profile
-		Users users = loginService.updateProfile(user);
-		return new ResponseEntity<Users>(users, HttpStatus.OK);
+		int status = loginService.updateProfile(user);
+		ResponseBody response = new ResponseBody();
+		if( status > 0 ) {
+			response.setResponseCode(HttpStatus.OK);
+			response.setResponseMessage("Profileupdated succssfylly");
+		}else {
+			response.setResponseCode(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		return new ResponseEntity<ResponseBody>(response, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/updatePassword", method = RequestMethod.POST)

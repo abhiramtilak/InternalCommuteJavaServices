@@ -19,12 +19,20 @@ public interface RideDAO {
 
 	RideRequests postRequest(RideRequests rideDetails);
 
-	void saveorUpdateDetails(Rides details);
-
 	List<Object[]> getRideRequests(int userId);
 
 	List<Rides> getMyRides(int userId);
 
 	void cancelRide(int rideId);
+
+	void acceptRideRequest(int requestId);
+
+	List<Object[]> getDetails(int requestId);
+
+	String getAvailableSeats(int rideId);
+
+	void rejectRideRequest(int requestId);
+
+	List<Object[]> getRideTakerDetails(int rideId);
 
 }

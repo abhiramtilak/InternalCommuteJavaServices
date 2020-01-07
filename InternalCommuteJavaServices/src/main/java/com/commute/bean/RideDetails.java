@@ -8,6 +8,8 @@ public class RideDetails {
 	
 	private String userId;
 	
+	private String userEmail;
+	
 	private String rideTakerId;
 	
 	private String riderName;
@@ -44,6 +46,14 @@ public class RideDetails {
 
 	public String getRiderName() {
 		return riderName;
+	}
+	
+	public String getUserEmail() {
+		return userEmail;
+	}
+
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
 	}
 
 	public void setRiderName(String riderName) {

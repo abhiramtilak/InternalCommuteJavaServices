@@ -14,15 +14,12 @@ import com.commute.db.model.Rides;
 @Transactional
 public interface RideRepository extends JpaRepository<Rides, String>{
 
-	@Query(value = "select * from rides where ride_date > ?1 and cancelled=0 and available_seats > 0", nativeQuery = true)
+	@Query(value = "select * from rides r where ride_date > ?1 and cancelled=0 and \r\n" + 
+			"available_seats > (select count(*) from ride_requests rr where rr.ride_id = r.ride_id and (rr.status='REQUESTED' or rr.status='ACCEPTED'))", nativeQuery = true)
 	List<Rides> getAllRides(String date);
 
 	@Query(value = "select * from rides where ride_id=?1", nativeQuery = true)
 	Rides getRideDetails(int rideId);
-	
-	@Modifying(clearAutomatically = true)
-	@Query(value="update rides set available_seats=?2 where ride_id=?1", nativeQuery = true)
-	void updateAvailableSeats(int rideId, String availableSeats);
 
 	@Query(value="select * from rides where user_id=?1 and ride_date > ?2 and cancelled=0", nativeQuery = true)
 	List<Rides> getMyRides(int userId, String currentDate);

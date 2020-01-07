@@ -19,7 +19,9 @@ import com.commute.db.model.RideRequests;
 import com.commute.db.model.Rides;
 import com.commute.db.model.Users;
 import com.commute.service.RideService;
+import com.commute.utils.MailBody;
 import com.commute.utils.RideStatus;
+import com.commute.utils.SendMail;
 
 
 @Component
@@ -30,6 +32,9 @@ public class RideServiceImpl implements RideService{
 	
 	@Autowired
 	LoginDAO loginDAO;
+	
+	@Autowired
+	SendMail sendMail;
 
 	public Rides postRide(Ride ride) {
 		
@@ -56,7 +61,7 @@ public class RideServiceImpl implements RideService{
 		List<RideDetails> rideDetailsList = new ArrayList<RideDetails>();
 		for( Rides rides : allRides ) {
 			RideDetails rideDetails = new RideDetails();
-			rideDetails.setAvailableSeats(rides.getAvailableSeats());
+			rideDetails.setAvailableSeats( (Integer.parseInt(rides.getAvailableSeats()) - Integer.parseInt(rideDAO.getAvailableSeats(rides.getRideId())))+"" );
 			rideDetails.setRideDateTime(rides.getRideDate());
 			rideDetails.setRideId(rides.getRideId());
 			Users user = loginDAO.validatePassword(rides.getUserId());
@@ -93,9 +98,7 @@ public class RideServiceImpl implements RideService{
 			RideRequests repsonseRequest = rideDAO.postRequest(rideRequest);
 			if( repsonseRequest.getRequestId()+"" != "" ) {
 				
-				details.setAvailableSeats( (Integer.parseInt(details.getAvailableSeats())-1)+"");
-				rideDAO.saveorUpdateDetails(details);
-				response.setResponseMessage("Ride request is successful!!");
+				response.setResponseMessage("Ride request is successful!! You will recieve mail with details once rider accepts ride request.");
 				response.setResponseCode(HttpStatus.OK);
 			}else {
 				response.setResponseMessage("Some thing went wrong. Please try again later!!");
@@ -136,6 +139,88 @@ public class RideServiceImpl implements RideService{
 
 	public void cancelRide(int rideId) {
 		rideDAO.cancelRide(rideId);
+		List<Object[]> rideTakerDetails = rideDAO.getRideTakerDetails(rideId);
+		String email="";
+		String fromAddress="";
+		String toAddress="";
+		String name="";
+		Date rideDate=new Date();
+		if( rideTakerDetails.size()>0 ) {
+			for( Object[] o : rideTakerDetails ) {
+				email = o[0].toString();
+				fromAddress= o[1].toString();
+				toAddress=o[2].toString();
+				rideDate=(Date)o[3];
+				name=o[4]+" "+o[5];
+			}
+		}
+		sendMail.sendMail(email, "Ride got cancelled.", MailBody.cancelledRide(name, fromAddress, toAddress, rideDate));
+		
+	}
+
+	public void acceptRideRequest(int requestId) {
+		
+		rideDAO.acceptRideRequest(requestId);
+		
+		List<Object[]> details = rideDAO.getDetails(requestId);
+		String riderName="";
+		String rideTakerName="";
+		String riderMobile="";
+		String rideTakerMobile="";
+		String fromAddress="";
+		String toAddress="";
+		String riderMailId = "";
+		String rideTakerMailId="";
+		Date rideDate = new Date();
+		
+		if( details.size() > 0 ) {
+			for( Object[] o: details ) {
+				
+				if( o[0].toString().equalsIgnoreCase("RideTaker") ) {
+					rideTakerName = o[1].toString()+" "+o[2].toString();
+					rideTakerMobile = o[3].toString();
+					fromAddress = o[4].toString();
+					toAddress = o[5].toString();
+					rideTakerMailId = o[6].toString();
+					rideDate = (Date)o[7];
+				}else if( o[0].toString().equalsIgnoreCase("Rider") ){
+					riderName = o[1].toString()+" "+o[2].toString();
+					riderMobile = o[3].toString();
+					riderMailId = o[6].toString();
+				}
+				
+			}
+		}
+		sendMail.sendMail(riderMailId, "Accepted ride request dated on "+rideDate, MailBody.acceptedRiderBody(riderName, rideTakerName, rideTakerMobile));
+		sendMail.sendMail(rideTakerMailId, "Accepted ride request dated on "+rideDate, MailBody.acceptedRideTakerBody(riderName, rideTakerName, fromAddress, toAddress, riderMobile));
+		
+	}
+
+	public void rejectRideRequest(int requestId) {
+		
+		rideDAO.rejectRideRequest(requestId);
+		
+		List<Object[]> details = rideDAO.getDetails(requestId);
+		String rideTakerName="";
+		String fromAddress="";
+		String toAddress="";
+		String rideTakerMailId = "";
+		Date rideDate = new Date();
+		
+		if( details.size() > 0 ) {
+			for( Object[] o: details ) {
+				
+				if( o[0].toString().equalsIgnoreCase("RideTaker") ) {
+					rideTakerName = o[1].toString()+" "+o[2].toString();
+					fromAddress = o[4].toString();
+					rideTakerMailId = o[6].toString();
+					toAddress = o[5].toString();
+					rideDate = (Date)o[7];
+				}
+				
+			}
+		}
+		sendMail.sendMail(rideTakerMailId, "Rejected ride request dated on "+rideDate, MailBody.rejectRideTakserBody(rideTakerName, fromAddress, toAddress, rideDate));
 		
 	}
 

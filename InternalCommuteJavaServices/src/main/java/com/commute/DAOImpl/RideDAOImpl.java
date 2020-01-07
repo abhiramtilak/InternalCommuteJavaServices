@@ -8,12 +8,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.commute.DAO.RideDAO;
 import com.commute.bean.RideDetails;
-import com.commute.bean.RideRequestDetails;
 import com.commute.db.model.RideRequests;
 import com.commute.db.model.Rides;
 import com.commute.db.repository.RideRepository;
 import com.commute.db.repository.RideRequestRepository;
 import com.commute.utils.DateUtils;
+import com.commute.utils.RideStatus;
 
 @Component
 @Transactional
@@ -48,11 +48,6 @@ public class RideDAOImpl implements RideDAO{
 		
 	}
 
-	public void saveorUpdateDetails(Rides details) {
-		rideRepository.updateAvailableSeats(details.getRideId(), details.getAvailableSeats());
-		
-	}
-
 	public List<Object[]> getRideRequests(int userId) {
 		return rideRequestRepository.getAllRideRequests(userId, DateUtils.getCurrentDateTime());		
 	}
@@ -65,6 +60,34 @@ public class RideDAOImpl implements RideDAO{
 
 	public void cancelRide(int rideId) {
 		rideRepository.cancelRide(rideId);
+		
+	}
+
+	public void acceptRideRequest(int requestId) {
+		
+		rideRequestRepository.acceptRideRequest(requestId, RideStatus.ACCEPTED.toString());
+		
+	}
+
+	public List<Object[]> getDetails(int requestId) {
+		
+		return rideRequestRepository.getDetails(requestId);
+	}
+
+	public String getAvailableSeats(int rideId) {
+		
+		return rideRequestRepository.getAvailableSeats(rideId);
+	}
+
+	public void rejectRideRequest(int requestId) {
+		
+		rideRequestRepository.rejectRideRequest(requestId, RideStatus.REJECTED.toString());
+		
+	}
+
+	public List<Object[]> getRideTakerDetails(int rideId) {
+		
+		return rideRequestRepository.getRideTakerDetails(rideId);
 		
 	}
 }

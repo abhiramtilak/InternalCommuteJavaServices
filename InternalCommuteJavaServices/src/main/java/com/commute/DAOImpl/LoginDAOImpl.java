@@ -21,8 +21,8 @@ public class LoginDAOImpl implements LoginDAO{
 		return dbUser;
 	}
 
-	public Users updateProfile(Users users) {
-		Users user = usersRepository.saveById(users.getUserId(), users.getFirstName(), users.getLastName(), users.getEmail(), users.getMobileNumber(),
+	public int updateProfile(Users users) {
+		int user = usersRepository.saveById(users.getUserId(), users.getFirstName(), users.getLastName(), users.getEmail(), users.getMobileNumber(),
 				users.getRole(), users.getOfficeAddress(), users.getHomeAddress(), users.getAvailableSeats(), users.getVehicle());
 		return user;
 	}

@@ -9,7 +9,7 @@ public interface LoginDAO {
 
 	public Users validateUser(Users users);
 
-	public Users updateProfile(Users users);
+	public int updateProfile(Users users);
 
 	public Users validatePassword(String userId);
 

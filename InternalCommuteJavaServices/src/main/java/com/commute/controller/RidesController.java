@@ -86,5 +86,27 @@ public class RidesController {
 		return new ResponseEntity<ResponseBody>(response, HttpStatus.OK);
 		
 	}
+	
+	@RequestMapping(value = "/acceptRequest", method = RequestMethod.GET)
+	public ResponseEntity<ResponseBody> acceptRideRequest( @RequestParam int requestId ) {
+		
+		rideService.acceptRideRequest(requestId);
+		ResponseBody response = new ResponseBody();
+		response.setResponseCode(HttpStatus.OK);
+		response.setResponseMessage("Ride request accepted.");
+		return new ResponseEntity<ResponseBody>(response, HttpStatus.OK);
+		
+	}
+	
+	@RequestMapping(value = "/rejectRequest", method = RequestMethod.GET)
+	public ResponseEntity<ResponseBody> rejectRideRequest( @RequestParam int requestId ) {
+		
+		rideService.rejectRideRequest(requestId);
+		ResponseBody response = new ResponseBody();
+		response.setResponseCode(HttpStatus.OK);
+		response.setResponseMessage("Ride request rejected.");
+		return new ResponseEntity<ResponseBody>(response, HttpStatus.OK);
+		
+	}
 
 }

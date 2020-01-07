@@ -27,7 +27,7 @@ public class LoginServiceImpl implements LoginService{
 		return dbUser;
 	}
 
-	public Users updateProfile(User user) {
+	public int updateProfile(User user) {
 		Users users = new Users();
 		users.setUserId(user.getUserId());
 		users.setFirstName(user.getFirstName());
@@ -44,7 +44,7 @@ public class LoginServiceImpl implements LoginService{
 			users.setAvailableSeats(null);
 			users.setVehicle(null);
 		}
-		Users dbuser = loginDAO.updateProfile(users);
+		int dbuser = loginDAO.updateProfile(users);
 		return dbuser;
 		
 	}

@@ -11,7 +11,7 @@ public interface LoginService {
 
 	public Users validateUser(User user);
 
-	public Users updateProfile(User user);
+	public int updateProfile(User user);
 
 	public String updatePassword(PasswordUpdate passwordUpdate);
 }

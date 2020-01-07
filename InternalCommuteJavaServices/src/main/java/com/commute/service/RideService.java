@@ -25,4 +25,8 @@ public interface RideService {
 
 	void cancelRide(int rideId);
 
+	void acceptRideRequest(int requestId);
+
+	void rejectRideRequest(int requestId);
+
 }
